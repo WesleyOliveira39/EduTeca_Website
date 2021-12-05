@@ -1,0 +1,91 @@
+{% extends 'paginas/modelo.html' %} 
+{% load static %} 
+
+{% block titulo %}
+<title>EduTeca</title>
+{% endblock %} 
+
+{% block barra %}
+<form action="?" method="GET">
+
+    <input type="text" name="titulo" id="" value="{{ request.GET.titulo }}" class="p-1 border" autocomplete="off" placeholder="Nome ou parte dele">
+
+    <button type="submit" class="btn btn-success">Buscar</button>
+
+    <a href="{% url 'index' %}" class="btn btn-light">Limpar</a>
+
+</form>
+{% endblock %}
+
+{% block conteudo %}
+{% if request.user.is_authenticated %}
+    {% if user.perfil.nome_instituicao %} 
+        <h3>Seja bem vindo {{user.perfil.nome_instituicao }}. </h3>
+    {% else %} 
+        <p>Cadastro imcompleto. Por favor, acesse <a href="{% url 'atualizarDados' %}">Meus Dados</a> para finalizar.</p>
+    {% endif %}
+{% endif %}
+
+<hr />
+
+<form action="?" method="GET">
+
+    <input type="text" name="titulo" id="" value="{{ request.GET.titulo }}" class="p-1 border" autocomplete="off" placeholder="Nome ou parte dele">
+
+    <button type="submit" class="btn btn-success">Buscar</button>
+
+    <a href="{% url 'index' %}" class="btn btn-light">Limpar</a>
+
+</form>
+
+<div class="col-md-10 mx-auto"> 
+    <br>
+    <h3>EduTeca - Catálogo de Livros</h3>
+    <hr>
+    <div>
+        {% for livro in object_list %}
+        <tr>
+            <h4>{{ livro.titulo }}</h4>
+            {% if livro.capa %}                             
+                <a href="{% url 'info-livro' livro.pk %}"><img src="{{ livro.capa.url }}" alt="" class="img-fluid" style="width: 100px; height: 125px; object-fit: cover"></a>
+            {% else %}          
+                <a href="{% url 'info-livro' livro.pk %}"><img src="{% static 'img/logo.png' %}" alt="" class="img-fluid" style="width: 100px; height: 125px; object-fit: cover"></a>
+            {% endif %}  
+        </tr>  
+        {% empty %}
+        <tr>
+            <td colspan="3"> Nenhum registro identificado!</td>
+        </tr>
+        {% endfor %}
+    </div>
+
+    <ul class="pagination justify-content-center">
+    
+        {% if page_obj.has_previous %}
+
+            {% if request.GET.nome %}
+                <li class="page-item"><a class="page-link" href="?page=1&nome={{request.GET.nome}}">&laquo; Primeira</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&nome={{request.GET.nome}}">Anterior</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; Primeira</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+            {% endif %}
+        {% endif %}
+    
+        <li class="page-item">
+            <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span></li>
+    
+        {% if page_obj.has_next %}
+            {% if request.GET.nome %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&nome={{request.GET.nome}}">Próxima</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&nome={{request.GET.nome}}">Última &raquo;</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Próxima</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a></li>
+            {% endif %}
+        {% endif %}
+    </ul>
+
+</div>
+{% endblock %}
+

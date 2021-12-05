@@ -1,0 +1,43 @@
+{% extends 'paginas/modelo.html' %} 
+{% load static %} 
+
+{% block titulo %}
+<title>EduTeca</title>
+{% endblock %} 
+
+{% block barra %}
+{% endblock %}
+
+{% block conteudo %}
+{% if request.user.is_authenticated %}
+    {% if user.perfil.nome_instituicao %} 
+        <h3>Seja bem vindo {{user.perfil.nome_instituicao }}. </h3>
+    {% else %} 
+        <p>Cadastro imcompleto. Por favor, acesse <a href="{% url 'atualizarDados' %}">Meus Dados</a> para finalizar.</p>
+    {% endif %}
+{% endif %}
+
+<hr />
+
+<form action="?" method="GET">
+
+    <input type="text" name="titulo" id="" value="{{ request.GET.titulo }}" class="p-1 border" autocomplete="off" placeholder="Nome ou parte dele">
+
+    <button type="submit" class="btn btn-success">Buscar</button>
+
+    <a href="{% url 'index' %}" class="btn btn-light">Limpar</a>
+
+</form>
+
+<div class="container"
+    <div class="row mt-3">
+        {% for l in livro_list %}
+            <div class="cold-md-4">
+                <div class="m-3">
+                    <h4>{{ l.titulo }}</h4>
+                    <a href="{% url 'info-livro' l.pk %}"><img src="{{ l.capa.url }}" alt="" class="img-fluid" style="width: 100px; height: 125px; object-fit: cover"></a>
+                </div>
+            </div>
+        {% endfor %}
+</div>
+{% endblock %} 

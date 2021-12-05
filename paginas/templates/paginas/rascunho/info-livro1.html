@@ -1,0 +1,24 @@
+{% extends 'paginas/modelo.html' %}
+{% load static %}
+
+{% block titulo %}
+    <title>{{ livro.titulo }}</title>
+{% endblock %}
+
+{% block carrossel %}
+{% endblock %}
+
+{% block conteudo %}
+    <h4>{{ livro.titulo }}</h4><hr>
+    <img src="{{ livro.capa.url }}" alt="" class="img-fluid" style="width: 100px; height: 125px; object-fit: cover"></a>
+    <div class="col-md-4 mx-auto">
+        <h3>{{ livro.titulo }}</h3>
+        <p>ISBN: {{ livro.isbn }} ---- Edição {{ livro.edicao }}</p>
+        <p>Autor(a): {{ livro.autor }}</p>
+        <p>Ano: {{ livro.ano }} --- Editora {{ livro.editora }}</p>
+        <p>Gênero: {{ livro.genero}}</p>
+        <hr>
+        <p>Resumo: {{ livro.resumo }}</p>
+    </div>
+{% endblock %}   
+

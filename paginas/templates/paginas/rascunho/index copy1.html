@@ -1,0 +1,34 @@
+{% extends 'paginas/modelo.html' %} 
+{% load static %} 
+
+{% block titulo %}
+<title>EduTeca</title>
+{% endblock %} 
+
+{% block barra %}
+{% endblock %}
+
+{% block conteudo %}
+{% if request.user.is_authenticated %}
+    {% if user.perfil.nome_instituicao %} 
+        <h3>Seja bem vindo {{user.perfil.nome_instituicao }}. </h3>
+    {% else %} 
+        <p>Cadastro imcompleto. Por favor, acesse <a href="{% url 'atualizarDados' %}">Meus Dados</a> para finalizar.</p>
+    {% endif %}
+{% endif %}
+
+<hr />
+
+<div class="container"
+    <div class="row mt-3">
+        {% for acervo in livro_list %}
+            <div class="cold-md-4">
+                <div class="m-3">
+                    <h4>{{ acervo.livro.titulo }}</h4>
+                    <a href="{% url 'info-livro' acervo.pk %}"><img src="{{ acervo.livro.capa.url }}" alt="" class="img-fluid" style="width: 100px; height: 125px; object-fit: cover"></a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 
